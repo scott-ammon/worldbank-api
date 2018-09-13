@@ -59,23 +59,28 @@ $(document).ready(function() {
     });
   });
 
-
-  let ascending = true;
-
   // Event delegation to handle column header clicks to sort data
   $('.header').on('click', 'th', function() {
     
     let order = '';
 
-    if(ascending) {
-      // convert headings into object keys to use in query string
+    // if first time clicked, add the data attribute
+    if(!$(this).attr('sort')) {
+      $(this).attr('sort', 'ASC');
+    }
+
+    // convert headings into object keys to use in query string
+    if($(this).attr('sort') === 'ASC') {
       order = $(this).text().toLowerCase().split(" ").join("_");
-      ascending = false;
+      $(this).attr('sort', 'DESC');
     } else {
-      order = $(this).text().toLowerCase().split(" ").join("_") + ' DESC';
-      ascending = true;
+      // add descending keyword to query string
+      order = $(this).text().toLowerCase().split(" ").join("_") + ' ' + $(this).attr('sort');
+      $(this).attr('sort', 'ASC');
     }
     
+    console.log('order is:', order);
+
     let url = 'https://finances.worldbank.org/resource/45tv-a6qy.json?$order=' + order + '&$limit=' + limit + '&$offset=' + offset;
     
     $.ajax({
