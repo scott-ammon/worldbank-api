@@ -5,8 +5,6 @@ $(document).ready(function() {
   let offset = 10;
   let order = '';
  
-  let url = 'https://finances.worldbank.org/resource/45tv-a6qy.json?$limit=' + limit;
-
   // array of the desired columns in the table
   const tableColumns = ['project_name', 
                         'major_sector',
@@ -18,33 +16,9 @@ $(document).ready(function() {
                         'contract_signing_date'
                        ];
 
-  // AJAX call to populate table
-  $.ajax({
-    type: 'GET',
-    url: url,
-    beforeSend: function(xhr) {xhr.setRequestHeader('X-App-Token', 'oI0EZnx5rD82yqWmwIIO5BkpB')},
-    error: function(err) {console.log(err)}
-  }).done(function(data) {
-    // Loop through each contract object and create html for table rows
-    data.forEach(contract => {
-      let tableRow = "";
-      tableColumns.forEach(columnHeader => {
-        if(columnHeader === 'supplier_contract_amount_usd') {
-          // Credit to http://jsfiddle.net/hAfMM/9571/ for the RegEx statement below
-          tableRow = tableRow + ("<td>$" + Number(contract[columnHeader]).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + "</td>");
-        } else {
-          tableRow = tableRow + ("<td>" + contract[columnHeader] + "</td>");
-        }
-      });
-      $('.table-body').append("<tr>" + tableRow + "</tr>");
-    });
-  });
-
-  // AJAX call triggered by click on next for pagination
-  $('.next').on('click', function() {
-
-    let url = 'https://finances.worldbank.org/resource/45tv-a6qy.json?$order=' + order + '&$limit=' + limit + '&$offset=' + offset;
-    
+  // function to reuse AJAX code with event handlers
+  const getWorldBankData = function(url) {
+    // AJAX Get request to World Bank API for major contracts data
     $.ajax({
       type: 'GET',
       url: url,
@@ -65,8 +39,17 @@ $(document).ready(function() {
         });
         $('.table-body').append("<tr>" + tableRow + "</tr>");
       });
-      offset+= limit;
     });
+  }
+
+  // initial AJAX call to populate the table
+  getWorldBankData('https://finances.worldbank.org/resource/45tv-a6qy.json?$limit=' + limit);
+
+  // AJAX call triggered by click on next for pagination
+  $('.next').on('click', function() {
+    let url = 'https://finances.worldbank.org/resource/45tv-a6qy.json?$order=' + order + '&$limit=' + limit + '&$offset=' + offset;
+    getWorldBankData(url);
+    offset+= limit;
   });
 
   // AJAX call for sorting by column header (toggles btw ascending and desc)
@@ -76,7 +59,6 @@ $(document).ready(function() {
     if(!$(this).attr('sort')) {
       $(this).attr('sort', 'ASC');
     }
-
     // convert headings into object keys to use in query string
     if($(this).attr('sort') === 'ASC') {
       order = $(this).text().toLowerCase().split(" ").join("_");
@@ -86,34 +68,8 @@ $(document).ready(function() {
       order = $(this).text().toLowerCase().split(" ").join("_") + ' ' + $(this).attr('sort');
       $(this).attr('sort', 'ASC');
     }
-    
-    console.log('order is:', order);
 
     let url = 'https://finances.worldbank.org/resource/45tv-a6qy.json?$order=' + order + '&$limit=' + limit;
-    
-    $.ajax({
-      type: 'GET',
-      url: url,
-      beforeSend: function(xhr) {xhr.setRequestHeader('X-App-Token', 'oI0EZnx5rD82yqWmwIIO5BkpB')},
-      error: function(err) {console.log(err)}
-    }).done(function(data) {
-      $('.table-body').children().remove();
-      // Loop through each contract object and create html for table rows
-      data.forEach(contract => {
-        let tableRow = "";
-        tableColumns.forEach(columnHeader => {
-          if(columnHeader === 'supplier_contract_amount_usd') {
-            // Credit to http://jsfiddle.net/hAfMM/9571/ for the RegEx statement below
-            tableRow = tableRow + ("<td>$" + Number(contract[columnHeader]).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + "</td>");
-          } else {
-            tableRow = tableRow + ("<td>" + contract[columnHeader] + "</td>");
-          }
-        });
-        $('.table-body').append("<tr>" + tableRow + "</tr>");
-      });
-    });
+    getWorldBankData(url);
   });
-    
-
-// end of document ready function
 });
