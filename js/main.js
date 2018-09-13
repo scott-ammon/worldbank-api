@@ -1,12 +1,16 @@
 $(document).ready(function() {
 
-  
+  // Global variables
+  const limit = 10;
+  let offset = 10;
+  let order = '';
+ 
+  let url = 'https://finances.worldbank.org/resource/45tv-a6qy.json?$limit=' + limit;
+
   // array of the desired columns in the table
   const tableColumns = ['project_name', 
-                        'project_id',
                         'major_sector',
                         'procurement_category',
-                        'supplier',
                         'supplier_country',
                         'borrower_country',
                         'supplier_contract_amount_usd',
@@ -14,10 +18,7 @@ $(document).ready(function() {
                         'contract_signing_date'
                        ];
 
-  let limit = 5;
-  let url = 'https://finances.worldbank.org/resource/45tv-a6qy.json?$limit=' + limit;
-
-  // AJAX call to populate initial table
+  // AJAX call to populate table
   $.ajax({
     type: 'GET',
     url: url,
@@ -28,17 +29,21 @@ $(document).ready(function() {
     data.forEach(contract => {
       let tableRow = "";
       tableColumns.forEach(columnHeader => {
-        tableRow = tableRow + ("<td>" + contract[columnHeader] + "</td>");
+        if(columnHeader === 'supplier_contract_amount_usd') {
+          // Credit to http://jsfiddle.net/hAfMM/9571/ for the RegEx statement below
+          tableRow = tableRow + ("<td>$" + Number(contract[columnHeader]).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + "</td>");
+        } else {
+          tableRow = tableRow + ("<td>" + contract[columnHeader] + "</td>");
+        }
       });
       $('.table-body').append("<tr>" + tableRow + "</tr>");
     });
   });
 
-  let offset = 5;
   // AJAX call triggered by click on next for pagination
   $('.next').on('click', function() {
 
-    let url = 'https://finances.worldbank.org/resource/45tv-a6qy.json?$limit=' + limit + '&$offset=' + offset;
+    let url = 'https://finances.worldbank.org/resource/45tv-a6qy.json?$order=' + order + '&$limit=' + limit + '&$offset=' + offset;
     
     $.ajax({
       type: 'GET',
@@ -51,18 +56,21 @@ $(document).ready(function() {
       data.forEach(contract => {
         let tableRow = "";
         tableColumns.forEach(columnHeader => {
-          tableRow = tableRow + ("<td>" + contract[columnHeader] + "</td>");
+          if(columnHeader === 'supplier_contract_amount_usd') {
+            // Credit to http://jsfiddle.net/hAfMM/9571/ for the RegEx statement below
+            tableRow = tableRow + ("<td>$" + Number(contract[columnHeader]).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + "</td>");
+          } else {
+            tableRow = tableRow + ("<td>" + contract[columnHeader] + "</td>");
+          }
         });
         $('.table-body').append("<tr>" + tableRow + "</tr>");
       });
-      offset+= 5;
+      offset+= limit;
     });
   });
 
-  // Event delegation to handle column header clicks to sort data
+  // AJAX call for sorting by column header (toggles btw ascending and desc)
   $('.header').on('click', 'th', function() {
-    
-    let order = '';
 
     // if first time clicked, add the data attribute
     if(!$(this).attr('sort')) {
@@ -81,7 +89,7 @@ $(document).ready(function() {
     
     console.log('order is:', order);
 
-    let url = 'https://finances.worldbank.org/resource/45tv-a6qy.json?$order=' + order + '&$limit=' + limit + '&$offset=' + offset;
+    let url = 'https://finances.worldbank.org/resource/45tv-a6qy.json?$order=' + order + '&$limit=' + limit;
     
     $.ajax({
       type: 'GET',
@@ -94,7 +102,12 @@ $(document).ready(function() {
       data.forEach(contract => {
         let tableRow = "";
         tableColumns.forEach(columnHeader => {
-          tableRow = tableRow + ("<td>" + contract[columnHeader] + "</td>");
+          if(columnHeader === 'supplier_contract_amount_usd') {
+            // Credit to http://jsfiddle.net/hAfMM/9571/ for the RegEx statement below
+            tableRow = tableRow + ("<td>$" + Number(contract[columnHeader]).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + "</td>");
+          } else {
+            tableRow = tableRow + ("<td>" + contract[columnHeader] + "</td>");
+          }
         });
         $('.table-body').append("<tr>" + tableRow + "</tr>");
       });
