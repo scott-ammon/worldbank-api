@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>World Bank Data</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -15,22 +14,24 @@
 		<table class="data-table striped">
         <thead>
           <tr class="header">
-              <th>Project Name<i class="material-icons">arrow_upward</i></th>
+          		<th>WB Contract Number</th>
+              <th>Project Name</th>
               <th>Major Sector</th>
               <th>Procurement Category</th>
               <th>Supplier Country</th>
               <th>Borrower Country</th>
               <th>Supplier Contract Amount USD</th>
-              <th>WB Contract Number</th>
               <th>Contract Signing Date</th>     
           </tr>
         </thead>
         <tbody class="table-body">
-          <!-- append child rows here in JS -->
+          <!-- Child rows are dynamically appended here -->
         </tbody>
       </table>
-      <button class="btn right blue next">Next Page</button>
+      <button class="btn left blue previous">Previous</button>
+      <button class="btn right blue next">Next</button>
 	</div>
+
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="js/main.js"></script>
 </body>

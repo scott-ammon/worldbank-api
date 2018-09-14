@@ -2,17 +2,17 @@ $(document).ready(function() {
 
   // Global variables
   const limit = 10;
-  let offset = 10;
+  let offset = 0;
   let order = '';
  
   // array of the desired columns in the table
-  const tableColumns = ['project_name', 
+  const tableColumns = ['wb_contract_number',
+                        'project_name', 
                         'major_sector',
                         'procurement_category',
                         'supplier_country',
                         'borrower_country',
                         'supplier_contract_amount_usd',
-                        'wb_contract_number',
                         'contract_signing_date'
                        ];
 
@@ -33,6 +33,9 @@ $(document).ready(function() {
           if(columnHeader === 'supplier_contract_amount_usd') {
             // Credit to http://jsfiddle.net/hAfMM/9571/ for the RegEx statement below
             tableRow = tableRow + ("<td>$" + Number(contract[columnHeader]).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + "</td>");
+          } else if (columnHeader === 'contract_signing_date') {
+            // format date to exclude everything after T marker
+            tableRow = tableRow + ("<td>" + (contract[columnHeader] !== undefined ? contract[columnHeader].split('T')[0] : "N/A") + "</td>");
           } else {
             tableRow = tableRow + ("<td>" + contract[columnHeader] + "</td>");
           }
@@ -42,34 +45,53 @@ $(document).ready(function() {
     });
   }
 
-  // initial AJAX call to populate the table
+  // initial call to populate the table
   getWorldBankData('https://finances.worldbank.org/resource/45tv-a6qy.json?$limit=' + limit);
 
-  // AJAX call triggered by click on next for pagination
+  // Click event handler on next button to retrieve next page of data from API
   $('.next').on('click', function() {
-    let url = 'https://finances.worldbank.org/resource/45tv-a6qy.json?$order=' + order + '&$limit=' + limit + '&$offset=' + offset;
-    getWorldBankData(url);
+    // increment offset for next page
     offset+= limit;
+    getWorldBankData('https://finances.worldbank.org/resource/45tv-a6qy.json?$order=' + order + '&$limit=' + limit + '&$offset=' + offset);
   });
 
-  // AJAX call for sorting by column header (toggles btw ascending and desc)
+  // Click event handler on previous button
+  $('.previous').on('click', function() {
+    // decrement offset for previous page
+    if(offset > 0) {
+      offset-= limit;
+    }
+    getWorldBankData('https://finances.worldbank.org/resource/45tv-a6qy.json?$order=' + order + '&$limit=' + limit + '&$offset=' + offset);
+    // increment offset to keep getting next page
+  });
+
+  // Click event handler on each column header to sort table (toggles btw ascending and desc)
   $('.header').on('click', 'th', function() {
 
-    // if first time clicked, add the data attribute
+    // remove the last sort arrow
+    $('.header th').children().remove();
+
+    // first time clicked, sort in ascending order
     if(!$(this).attr('sort')) {
-      $(this).attr('sort', 'ASC');
-    }
-    // convert headings into object keys to use in query string
-    if($(this).attr('sort') === 'ASC') {
+      // modify headings to match object keys for use in query string
       order = $(this).text().toLowerCase().split(" ").join("_");
-      $(this).attr('sort', 'DESC');
-    } else {
-      // add descending keyword to query string
-      order = $(this).text().toLowerCase().split(" ").join("_") + ' ' + $(this).attr('sort');
+      // After sorting ascending, set the attr to descending for next click
       $(this).attr('sort', 'ASC');
+      $(this).append('<i class="material-icons">arrow_upward</i>');
+    } else if ($(this).attr('sort') === 'ASC') {
+      // add descending keyword to query string
+      order = $(this).text().toLowerCase().split(" ").join("_") + ' DESC';
+      $(this).attr('sort', 'DESC');
+      $(this).append('<i class="material-icons">arrow_downward</i>');
+    } else {
+      order = '';
+      $(this).removeAttr('sort');
     }
 
-    let url = 'https://finances.worldbank.org/resource/45tv-a6qy.json?$order=' + order + '&$limit=' + limit;
-    getWorldBankData(url);
+    getWorldBankData('https://finances.worldbank.org/resource/45tv-a6qy.json?$order=' + order + '&$limit=' + limit);
   });
+
+  $('.table-body').on('click', 'tr', function() {
+
+  })
 });
