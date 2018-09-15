@@ -4,6 +4,51 @@ $(document).ready(function() {
   const limit = 10;
   let offset = 0;
   let order = '';
+
+  // AJAX call to get data and plot chart with major sectors
+  $.ajax({
+    type: 'GET',
+    url: 'https://finances.worldbank.org/resource/45tv-a6qy.json?$limit=1000',
+    beforeSend: function(xhr) {xhr.setRequestHeader('X-App-Token', 'oI0EZnx5rD82yqWmwIIO5BkpB')},
+    error: function(err) {console.log(err)}
+  }).done(function(data) {
+    // Object to hold the counts of each major sector
+    let counts = {};
+    data.forEach(contract => {
+      counts[contract['major_sector']] = 1 + (counts[contract['major_sector']] || 0);
+    });
+    
+    let sectorData = [];
+    let colors = [];
+    // Make array of sector counts to graph
+    Object.keys(counts).forEach(function(key, i) {
+      sectorData.push(counts[key]);
+      colors.push('rgba(0, ' + Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255) + ', .7');
+      // borders.push("rgba(255, 255, 255, 1)");
+    });
+
+    // define context by grabbing the div with id = myChart
+    var ctx = document.getElementById("sector-chart").getContext('2d');
+    
+    // Create chart and initialize with tag names and colors
+    var myChart = new Chart(ctx, {
+    type: 'doughnut',
+      data: {
+        datasets: [{
+          data: sectorData,
+          backgroundColor: colors,
+        }],
+        labels: Object.keys(counts)
+      },
+      options: {
+        legend: null,
+        cutoutPercentage: 60,
+        animation: {
+          duration: 2000
+        }
+      }
+    });
+  });
  
   // array of the desired columns in the table
   const tableColumns = ['wb_contract_number',
@@ -44,59 +89,6 @@ $(document).ready(function() {
       });
     });
   }
-
-  // AJAX call to get data and plot chart with major sectors
-  $.ajax({
-    type: 'GET',
-    url: 'https://finances.worldbank.org/resource/45tv-a6qy.json?$limit=1000',
-    beforeSend: function(xhr) {xhr.setRequestHeader('X-App-Token', 'oI0EZnx5rD82yqWmwIIO5BkpB')},
-    error: function(err) {console.log(err)}
-  }).done(function(data) {
-    // Object to hold the counts of each major sector
-    let counts = {};
-    data.forEach(contract => {
-      counts[contract['major_sector']] = 1 + (counts[contract['major_sector']] || 0);
-    });
-    
-    let sectorData = [];
-    let colors = [];
-    // Make array of sector counts to graph
-    Object.keys(counts).forEach(function(key, i) {
-      sectorData.push(counts[key]);
-      colors.push('rgba(0, ' + Math.floor(Math.random() * 255) + ', 0, 0.5');
-      // borders.push("rgba(255, 255, 255, 1)");
-    });
-
-    // define context by grabbing the div with id = myChart
-    var ctx = document.getElementById("sector-chart").getContext('2d');
-    
-    // Create chart and initialize with tag names and colors
-    var myChart = new Chart(ctx, {
-    type: 'doughnut',
-      data: {
-        datasets: [{
-          data: sectorData,
-          backgroundColor: colors,
-        }],
-        labels: Object.keys(counts)
-      },
-      options: {
-        // legend: {
-        //   position: 'right',
-        //   fontColor: '#000',
-        //   labels: {
-        //     fontSize: 10,
-        //     fontColor: '#000'
-        //   }
-        // },
-        legend: null,
-        cutoutPercentage: 60,
-        animation: {
-          duration: 2000
-        }
-      }
-    });
-  });
   
   // initial call to populate the table
   getWorldBankData('https://finances.worldbank.org/resource/45tv-a6qy.json?$limit=' + limit);
