@@ -1,19 +1,41 @@
-/* ===== General Styles ===== */
+/* ========== General Styles =========== */
 body {
 	font-family: "Ubuntu", sans-serif;
 }
-/* ===== Header ===== */
+/* =============== Header ============== */
 h1 {
 	font-size: 32px;
 }
 
-/* ===== Table  ===== */
+/* =========== Pagination row ========== */
+span {
+	vertical-align: middle;
+}
+
+/* =============== Table  ============== */
 .data-table {
 	font-size: 10px;
 }
 
-i {
-	font-size: 18px;
+td,
+th {
+	height: 60px;
+	width: 120px;
+	padding: 5px;
 }
+
+.page-row {
+	text-align: center;
+}
+
+/* Override Materialize table default for border */
+tr.header {
+	border-bottom: 3px solid black !important;
+}
+
+.material-icons {
+	font-size: 12px;
+}
+
 
 

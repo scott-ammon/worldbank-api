@@ -53,6 +53,8 @@ $(document).ready(function() {
     // increment offset for next page
     offset+= limit;
     getWorldBankData('https://finances.worldbank.org/resource/45tv-a6qy.json?$order=' + order + '&$limit=' + limit + '&$offset=' + offset);
+    let page = (offset / limit) + 1;
+    $('.page').text(`Page: ${page}`);
   });
 
   // Click event handler on previous button
@@ -62,7 +64,8 @@ $(document).ready(function() {
       offset-= limit;
     }
     getWorldBankData('https://finances.worldbank.org/resource/45tv-a6qy.json?$order=' + order + '&$limit=' + limit + '&$offset=' + offset);
-    // increment offset to keep getting next page
+    let page = offset === 0 ? 1 : (offset / limit) + 1;
+    $('.page').text(`Page: ${page}`);
   });
 
   // Click event handler on each column header to sort table (toggles btw ascending and desc)
@@ -87,7 +90,11 @@ $(document).ready(function() {
       order = '';
       $(this).removeAttr('sort');
     }
-
+    // reset offset because data is sorted
+    offset = 0;
+    // sorting resets the page #
+    let page = 1;
+    $('.page').text(`Page: ${page}`);
     getWorldBankData('https://finances.worldbank.org/resource/45tv-a6qy.json?$order=' + order + '&$limit=' + limit);
   });
 
