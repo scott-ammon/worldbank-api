@@ -6,30 +6,41 @@
   <title>World Bank Data</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 	<div class="container">
-		<h1 class="center">World Bank: Major Contract Awards</h1>
-		<table class="data-table striped">
-        <thead>
-          <tr class="header">
-          		<th>WB Contract Number</th>
-              <th>Project Name</th>
-              <th>Major Sector</th>
-              <th>Procurement Category</th>
-              <th>Supplier Country</th>
-              <th>Borrower Country</th>
-              <th>Supplier Contract Amount USD</th>
-              <th>Contract Signing Date</th>     
-          </tr>
-        </thead>
-        <tbody class="table-body">
-          <!-- Child rows are dynamically appended here -->
-        </tbody>
-      </table>
-      <button class="btn left blue previous">Previous</button>
-      <button class="btn right blue next">Next</button>
+    <h1 class="center">World Bank: Major Contract Awards</h1>
+    <div class="row">
+      <div class="col l12">
+        <table class="data-table striped">
+            <thead>
+              <tr class="header">
+                  <th>WB Contract Number</th>
+                  <th>Project Name</th>
+                  <th>Major Sector</th>
+                  <th>Procurement Category</th>
+                  <th>Supplier Country</th>
+                  <th>Borrower Country</th>
+                  <th>Supplier Contract Amount USD</th>
+                  <th>Contract Signing Date</th>     
+              </tr>
+            </thead>
+            <tbody class="table-body">
+              <!-- Child rows are dynamically appended here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col l12">
+          <button class="btn left blue previous">Previous</button>
+          <span class="page-number"></span>
+          <button class="btn right blue next">Next</button>
+        </div>
+      </div>
+      
 	</div>
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

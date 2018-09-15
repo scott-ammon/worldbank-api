@@ -91,7 +91,8 @@ $(document).ready(function() {
     getWorldBankData('https://finances.worldbank.org/resource/45tv-a6qy.json?$order=' + order + '&$limit=' + limit);
   });
 
+  // Get specific contract details
   $('.table-body').on('click', 'tr', function() {
 
-  })
+  });
 });

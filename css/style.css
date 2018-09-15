@@ -1,3 +1,13 @@
+/* ===== General Styles ===== */
+body {
+	font-family: "Ubuntu", sans-serif;
+}
+/* ===== Header ===== */
+h1 {
+	font-size: 32px;
+}
+
+/* ===== Table  ===== */
 .data-table {
 	font-size: 10px;
 }
@@ -5,3 +15,5 @@
 i {
 	font-size: 18px;
 }
+
+
