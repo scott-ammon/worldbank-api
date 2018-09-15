@@ -1,11 +1,11 @@
 $(document).ready(function() {
 
-  // Global variables
+  // Global variables used in API query strings
   const limit = 10;
   let offset = 0;
   let order = '';
 
-  // AJAX call to get data and plot chart with major sectors
+  // AJAX call on page load to get data and plot chart with major sectors
   $.ajax({
     type: 'GET',
     url: 'https://finances.worldbank.org/resource/45tv-a6qy.json?$limit=1000',
@@ -27,7 +27,7 @@ $(document).ready(function() {
       // borders.push("rgba(255, 255, 255, 1)");
     });
 
-    // define context by grabbing the div with id = myChart
+    // define Canvas context by selecting the div with id = myChart
     var ctx = document.getElementById("sector-chart").getContext('2d');
     
     // Create chart and initialize with tag names and colors
@@ -61,7 +61,7 @@ $(document).ready(function() {
                         'contract_signing_date'
                        ];
 
-  // function to reuse AJAX code with event handlers
+  // function wrapper to reuse AJAX code in event handlers
   const getWorldBankData = function(url) {
     // AJAX Get request to World Bank API for major contracts data
     $.ajax({
@@ -141,10 +141,5 @@ $(document).ready(function() {
     let page = 1;
     $('.page').text(`Page: ${page}`);
     getWorldBankData('https://finances.worldbank.org/resource/45tv-a6qy.json?$order=' + order + '&$limit=' + limit);
-  });
-
-  // Get specific contract details
-  $('.table-body').on('click', 'tr', function() {
-
   });
 });

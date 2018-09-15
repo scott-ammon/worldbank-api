@@ -1,64 +1,64 @@
 /* ============= General Styles ============== */
 body {
-	font-family: "Ubuntu", sans-serif;
+  font-family: "Ubuntu", sans-serif;
 }
-/* ================== Header ================= */
+/* ================= Headers ================= */
 h1 {
-	font-size: 32px;
+  font-size: 32px;
 }
 
 h3 {
-	font-size: 18px;
+  font-size: 18px;
 }
 
 /* ============== Pagination row ============= */
 span {
-	vertical-align: middle;
-	margin-right: 30px;
+  vertical-align: middle;
+  margin-right: 30px;
 }
 
 /* ================== Table  ================= */
 .data-table {
-	font-size: 10px;
+  font-size: 10px;
 }
 
 td,
 th {
-	height: 60px;
-	width: 120px;
-	padding: 5px;
+  height: 60px;
+  width: 120px;
+  padding: 5px;
 }
 
 .page-row {
-	text-align: center;
+  text-align: center;
 }
 
 tr.header {
-	border-bottom: 3px solid black !important;
+  border-bottom: 3px solid black !important;
 }
 
 tr.header th:hover {
-	background-color: #4caf50;
+  background-color: #4caf50;
 }
 
 .material-icons {
-	font-size: 12px;
+  font-size: 12px;
 }
 
 /* ====== Limit table columns on mobile  ===== */
 @media (max-width: 500px) {
-	.data-table td, th {
-		display:none;
-	}
+  .data-table td, th {
+    display:none;
+  }
 
-	.data-table td:nth-child(1),
-	.data-table td:nth-child(2),
-	.data-table td:nth-child(3),
-	.data-table th:nth-child(1),
-	.data-table th:nth-child(2),
-	.data-table th:nth-child(3) {
-		display: table-cell;
-	}
+  .data-table td:nth-child(1),
+  .data-table td:nth-child(2),
+  .data-table td:nth-child(3),
+  .data-table th:nth-child(1),
+  .data-table th:nth-child(2),
+  .data-table th:nth-child(3) {
+    display: table-cell;
+  }
 }
 
 

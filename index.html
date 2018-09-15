@@ -10,16 +10,16 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-	<div class="container">
+  <div class="container">
     <h1 class="center">World Bank Major Contract Awards</h1>
-    
     <h3 class="center">Projects by Sector</h3>
+    <!-- Canvas chart for donut plot -->
     <div class="row">
       <div class="col l6 offset-l3 m8 offset-m2 s12">
         <canvas id="sector-chart" width="50" height="50"></canvas>
       </div>
     </div>
-
+    <!-- Top row with navigation buttons and page number -->
     <div class="row">
       <div class="col l12 s12 page-row">
         <button class="btn-small waves-effect waves-light left green previous">Previous</button>
@@ -27,7 +27,7 @@
         <button class="btn-small waves-effect waves-light right green next">Next</button>
       </div>
     </div>
-
+    <!-- Data table -->
     <div class="row">
       <div class="col l12">
         <table class="data-table striped">
@@ -49,8 +49,7 @@
           </table>
         </div>
       </div>
-	</div>
-
+  </div>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
