@@ -33,6 +33,10 @@ tr.header {
 	border-bottom: 3px solid black !important;
 }
 
+tr.header th:hover {
+	background-color: #4caf50;
+}
+
 .material-icons {
 	font-size: 12px;
 }
