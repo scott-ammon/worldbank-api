@@ -1,18 +1,23 @@
-/* ========== General Styles =========== */
+/* ============= General Styles ============== */
 body {
 	font-family: "Ubuntu", sans-serif;
 }
-/* =============== Header ============== */
+/* ================== Header ================= */
 h1 {
 	font-size: 32px;
 }
 
-/* =========== Pagination row ========== */
-span {
-	vertical-align: middle;
+h3 {
+	font-size: 18px;
 }
 
-/* =============== Table  ============== */
+/* ============== Pagination row ============= */
+span {
+	vertical-align: middle;
+	margin-right: 30px;
+}
+
+/* ================== Table  ================= */
 .data-table {
 	font-size: 10px;
 }
@@ -28,7 +33,6 @@ th {
 	text-align: center;
 }
 
-/* Override Materialize table default for border */
 tr.header {
 	border-bottom: 3px solid black !important;
 }
@@ -39,6 +43,22 @@ tr.header th:hover {
 
 .material-icons {
 	font-size: 12px;
+}
+
+/* ====== Limit table columns on mobile  ===== */
+@media (max-width: 500px) {
+	.data-table td, th {
+		display:none;
+	}
+
+	.data-table td:nth-child(1),
+	.data-table td:nth-child(2),
+	.data-table td:nth-child(3),
+	.data-table th:nth-child(1),
+	.data-table th:nth-child(2),
+	.data-table th:nth-child(3) {
+		display: table-cell;
+	}
 }
 
 
